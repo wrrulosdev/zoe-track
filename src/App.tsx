@@ -1,49 +1,39 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
+import AppSection from "./components/AppSection";
+import MainHeader from "./components/header/MainHeader";
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
-
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
-
   return (
     <main className="container">
-      <h1>Welcome to Tauri + React</h1>
+      <MainHeader />
 
-      <div className="row">
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo vite" alt="Vite logo" />
-        </a>
-        <a href="https://tauri.app" target="_blank">
-          <img src="/tauri.svg" className="logo tauri" alt="Tauri logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <p>Click on the Tauri, Vite, and React logos to learn more.</p>
-
-      <form
-        className="row"
-        onSubmit={(e) => {
-          e.preventDefault();
-          greet();
-        }}
-      >
-        <input
-          id="greet-input"
-          onChange={(e) => setName(e.currentTarget.value)}
-          placeholder="Enter a name..."
+      <section className="app-content">
+        <AppSection
+          title="State"
+          description="Status text"
+          showSwitch={false}
+          enabled={false}
         />
-        <button type="submit">Greet</button>
-      </form>
-      <p>{greetMsg}</p>
+        <AppSection
+          title="Auto-accept"
+          description="Automatically accept games"
+          showSwitch={true}
+        />
+        <AppSection
+          title="Auto-ban & pick"
+          description="Automatically pick and ban champions"
+          showSwitch={true}
+        />
+        <AppSection
+          title="SoloQ Lobby Usernames"
+          description="Show the hidden usernames of your team"
+          showSwitch={true}
+        />
+      </section>
+
+      <footer>
+        <span>Zoe v1.0.0</span>
+      </footer>
     </main>
   );
 }
