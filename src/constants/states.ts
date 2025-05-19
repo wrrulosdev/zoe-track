@@ -7,7 +7,7 @@ export type AppState = {
 
 export const STATES: { [key: string]: AppState } = {
   INACTIVE: {
-    description: "Zoe is now inactive",
+    description: "ZoeTrack is now inactive",
     span: "Inactive",
     textColor: "white",
     bgColor: "red",

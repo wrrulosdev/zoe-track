@@ -10,7 +10,7 @@ function Header() {
         <img
           className="zoe-img"
           src="/public/ZoeTrack-Icon-Transparent.webp"
-          alt="Zoe Track Logo"
+          alt="ZoeTrack Track Logo"
         />
         <span className="app-name">ZoeTrack</span>
       </div>

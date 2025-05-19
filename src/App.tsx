@@ -32,7 +32,7 @@ function App() {
       </section>
 
       <footer>
-        <span>Zoe v1.0.0</span>
+        <span>ZoeTrack v1.0.0</span>
       </footer>
     </main>
   );
