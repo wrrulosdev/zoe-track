@@ -86,6 +86,8 @@ export async function monitorGame(lockFileData: LockFileData): Promise<void> {
     console.warn("Failed to fetch session info:", error);
   }
 
+  await invoke("open_popup");
+
   const phase = await getGameflowPhase(lockFileData);
   if (!phase) return;
 
