@@ -1,0 +1,91 @@
+.settings-container {
+  height: 100vh;
+  max-width: 500px;
+  background-color: #111014;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.settings-container h1 {
+  font-size: 20px;
+  color: #d5b3ff;
+  margin-bottom: 8px;
+}
+
+hr {
+  border: none;
+  border-bottom: 1px solid #2c2c2c;
+  margin-bottom: 20px;
+}
+
+.config {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.setting {
+  display: flex;
+  flex-direction: column;
+}
+
+.setting label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #ccc;
+}
+
+.setting input,
+.setting select {
+  background-color: #1e1d22;
+  color: white;
+  border: 1px solid #2c2c2c;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.setting input:focus,
+.setting select:focus {
+  border-color: #b583ff;
+}
+
+.champion-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.champion-badge {
+  background-color: #2a2a2a;
+  color: white;
+  border-radius: 9999px;
+  padding: 4px 10px;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.champion-badge button {
+  background: none;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.champion-badge button:hover {
+  color: red;
+}
+
+.champion-badge svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+}
