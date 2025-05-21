@@ -1,30 +1,42 @@
 import { useEffect, useRef, useState } from "react";
 import { STATES } from "../constants/states";
-import { changeStatus, changePowerButtonColor } from "./ui";
+import {
+  changeStatus,
+  changePowerButtonColor,
+  togglePorofessorButton,
+} from "./ui";
 import { isLolRunning, monitorGame, readLockFile } from "./lcu";
 
 /**
- * Lockfile data used for authenticated requests to the League client.
+ * Represents the parsed contents of League of Legends' `lockfile`,
+ * which is required to authenticate and communicate with the local client API.
  */
-interface LockFileData {
+export interface LockFileData {
   port: number;
   token: string;
 }
 
 /**
- * Custom hook to handle power button logic.
+ * Custom React hook for handling the behavior of the application's power button.
  *
- * @returns An object containing the activation state and a toggle function.
+ * This hook manages the state for activating/deactivating the tool, sets up monitoring
+ * of the League of Legends client when active, and ensures UI elements update accordingly.
+ *
+ * @returns An object containing:
+ * - `togglePower`: Function to activate or deactivate the tool.
+ * - `lockFileData`: The current lockfile data used to connect with the LoL client API, if available.
  */
 export function usePowerButton() {
   const [isActive, setIsActive] = useState(false);
+  const [lockFileData, setLockFileData] = useState<LockFileData | null>(null);
   const monitorIntervalRef = useRef<ReturnType<typeof setInterval> | null>(
     null
   );
-  const lockFileRef = useRef<LockFileData | null>(null);
 
   /**
-   * Toggles the power state and handles related logic.
+   * Toggles the power state of the tool. When activated, it attempts to detect
+   * the running game client, reads the lockfile, and begins monitoring the game.
+   * When deactivated, it stops monitoring and resets UI state.
    */
   const togglePower = async () => {
     const nextState = !isActive;
@@ -33,43 +45,38 @@ export function usePowerButton() {
     if (!nextState) {
       changePowerButtonColor(false);
       changeStatus(STATES.INACTIVE);
-
       if (monitorIntervalRef.current) {
         clearInterval(monitorIntervalRef.current);
         monitorIntervalRef.current = null;
       }
-
       return;
     }
 
     changePowerButtonColor(true);
-    changeStatus(STATES.WAITING);
+    changeStatus(STATES.CLIENT_WAITING);
 
     const gameRunning = await isLolRunning();
+    if (!gameRunning) return;
 
-    if (!gameRunning) {
-      return;
-    }
+    const data = await readLockFile();
+    if (!data) return;
 
-    const lockFileData = await readLockFile();
+    setLockFileData(data);
 
-    if (!lockFileData) {
-      return;
-    }
-
-    lockFileRef.current = lockFileData;
-
+    togglePorofessorButton(false);
     monitorIntervalRef.current = setInterval(() => {
-      if (lockFileRef.current) {
-        monitorGame(lockFileRef.current);
+      if (data) {
+        monitorGame(data);
       }
     }, 1000);
   };
 
   useEffect(() => {
     setIsActive(false);
+    setLockFileData(null);
     changePowerButtonColor(false);
     changeStatus(STATES.INACTIVE);
+    togglePorofessorButton(false);
 
     const blockReload = (e: KeyboardEvent) => {
       if (
@@ -79,17 +86,18 @@ export function usePowerButton() {
         e.preventDefault();
       }
     };
-
     window.addEventListener("keydown", blockReload);
+
     return () => {
       if (monitorIntervalRef.current) {
         clearInterval(monitorIntervalRef.current);
-        monitorIntervalRef.current = null;
       }
-
       window.removeEventListener("keydown", blockReload);
     };
   }, []);
 
-  return { isActive, togglePower };
+  return {
+    togglePower,
+    lockFileData,
+  };
 }

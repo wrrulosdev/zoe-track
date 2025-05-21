@@ -1,11 +1,42 @@
 import "./Home.css";
-import AppSection from "../../components/AppSection";
+import AppSection from "../../components/home/AppSection";
 import MainHeader from "../../components/header/MainHeader";
+import { usePowerButton } from "../../hooks/usePowerButton";
+import { getUsernamesInLobby } from "../../hooks/lcu";
+import { invoke } from "@tauri-apps/api/core";
+import { getCurrentWindow, LogicalSize } from "@tauri-apps/api/window";
+import { useEffect } from "react";
 
 function Home() {
+  const { togglePower, lockFileData } = usePowerButton();
+
+  const handlePorofessorClick = async () => {
+    if (!lockFileData) {
+      console.warn("Lockfile not loaded!");
+      return;
+    }
+
+    const users = await getUsernamesInLobby(lockFileData);
+    console.log(users);
+    const userTags = users
+      .map((user) => `${user.name}-${user.tag}`)
+      .map((str) => encodeURIComponent(str))
+      .join(",");
+    console.log(userTags);
+
+    await invoke("open_porofessor", { region: "las", players: userTags });
+  };
+
+  useEffect(() => {
+    const resizeWindow = async () => {
+      await getCurrentWindow().setSize(new LogicalSize(400, 400));
+    };
+    resizeWindow();
+  }, []);
+
   return (
     <main className="container">
-      <MainHeader />
+      <MainHeader togglePower={togglePower} />
 
       <section className="app-content">
         <AppSection
@@ -25,9 +56,10 @@ function Home() {
           showSwitch={true}
         />
         <AppSection
-          title="SoloQ Lobby Usernames"
-          description="Show the hidden usernames of your team"
-          showSwitch={true}
+          title="Lobby Usernames"
+          description="Show the usernames of your team"
+          showPorofessorButton={true}
+          onPorofessorClick={handlePorofessorClick}
         />
       </section>
 

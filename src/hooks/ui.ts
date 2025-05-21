@@ -34,3 +34,21 @@ export function changePowerButtonColor(status: boolean): void {
     console.warn("Power button not found or is not an SVGElement.");
   }
 }
+
+/**
+ * Toggles the state and style of the Porofessor button.
+ * @param enabled - Whether the button should be enabled.
+ */
+export function togglePorofessorButton(enabled: boolean): void {
+  const button = document.getElementById("porofessorButton");
+
+  if (!(button instanceof HTMLButtonElement)) {
+    console.warn("Porofessor button not found or is not an HTMLButtonElement.");
+    return;
+  }
+
+  button.disabled = !enabled;
+  button.textContent = !enabled ? "Not available now" : "Open Porofessor";
+  button.classList.toggle("available", enabled);
+  console.log(`Porofessor button is now ${enabled ? "enabled" : "disabled"}.`);
+}

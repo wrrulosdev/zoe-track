@@ -26,3 +26,4 @@ sysinfo = "0.35.1"
 tokio = { version = "0.2", features = ["full"] }
 reqwest = { version = "0.11", default-features = false, features = ["json", "rustls-tls"] }
 base64 = "0.22.1"
+open = "5.3.2"

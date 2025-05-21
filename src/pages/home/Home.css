@@ -14,11 +14,12 @@
   user-select: none;
 }
 
-main {
+.container {
   height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
+  background-color: #27272a;
 }
 
 .header {
@@ -144,6 +145,25 @@ p {
 
 .switch input:checked + .slider::before {
   transform: translateX(26px);
+}
+
+.porofessor-button {
+  color: #ffffff;
+  background: #ff4742;
+  border: 1px solid #ff4742;
+  border-radius: 6px;
+  box-shadow: rgba(0, 0, 0, 0.1) 1px 2px 4px;
+  box-sizing: border-box;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 16px;
+  padding: 12px 12px;
+}
+
+.porofessor-button.available {
+  background: #4caf50;
+  border-color: #4caf50;
+  cursor: pointer;
 }
 
 footer {

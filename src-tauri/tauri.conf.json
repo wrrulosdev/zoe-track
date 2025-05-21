@@ -20,7 +20,14 @@
       }
     ],
     "security": {
-      "csp": null
+      "csp": null,
+      "capabilities": [
+        {
+          "identifier": "window-access",
+          "windows": ["main", "external"],
+          "permissions": ["core:window:allow-set-size"]
+        }
+      ]
     }
   },
   "bundle": {

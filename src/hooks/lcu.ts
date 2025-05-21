@@ -1,5 +1,5 @@
 import { invoke } from "@tauri-apps/api/core";
-import { changeStatus } from "./ui";
+import { changeStatus, togglePorofessorButton } from "./ui";
 import { STATES } from "../constants/states";
 
 export interface LockFileData {
@@ -64,6 +64,26 @@ export async function acceptGame(lockFileData: LockFileData): Promise<void> {
 }
 
 /**
+ *
+ */
+export async function getUsernamesInLobby(lockFileData: LockFileData) {
+  try {
+    const sessionInfo = await invoke("session_info", {
+      port: lockFileData.port,
+      token: lockFileData.token,
+    });
+    console.log(sessionInfo);
+    const users = sessionInfo.myTeam.map((player) => ({
+      name: player.gameName,
+      tag: player.tagLine ?? "UNKNOWN",
+    }));
+    return users;
+  } catch (error) {
+    console.warn("Failed to fetch session info:", error);
+  }
+}
+
+/**
  * Continuously monitors the League client state and updates UI accordingly.
  * @param lockFileData Object containing port and token.
  */
@@ -75,19 +95,6 @@ export async function monitorGame(lockFileData: LockFileData): Promise<void> {
     "autoBanPickSwitch"
   ) as HTMLInputElement | null;
 
-  // Fetch and log session info (testing)
-  try {
-    const sessionInfo = await invoke("session_info", {
-      port: lockFileData.port,
-      token: lockFileData.token,
-    });
-    console.log(sessionInfo);
-  } catch (error) {
-    console.warn("Failed to fetch session info:", error);
-  }
-
-  await invoke("open_popup");
-
   const phase = await getGameflowPhase(lockFileData);
   if (!phase) return;
 
@@ -95,27 +102,32 @@ export async function monitorGame(lockFileData: LockFileData): Promise<void> {
     case "Lobby":
       console.log("In lobby");
       changeStatus(STATES.LOBBY);
+      togglePorofessorButton(false);
       break;
 
     case "Matchmaking":
       console.log("In queue...");
       changeStatus(STATES.QUEUE);
+      togglePorofessorButton(false);
       break;
 
     case "ReadyCheck":
       if (!autoAcceptSwitch?.checked) return;
+      changeStatus(STATES.GAME_FOUND);
       console.log("Match found, accepting...");
       await acceptGame(lockFileData);
       break;
 
     case "ChampSelect":
       changeStatus(STATES.CHAMP_SELECT);
+      togglePorofessorButton(true);
       if (!autoBanPickSwitch?.checked) return;
       console.log("In champion select");
       break;
 
     case "InProgress":
       changeStatus(STATES.IN_GAME);
+      togglePorofessorButton(false);
       console.log("Game in progress");
       break;
 
@@ -123,6 +135,8 @@ export async function monitorGame(lockFileData: LockFileData): Promise<void> {
 
     default:
       console.log("Unknown state:", phase);
+      changeStatus(STATES.LOBBY_WAITING);
+      togglePorofessorButton(false);
       break;
   }
 }
