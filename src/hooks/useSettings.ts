@@ -22,7 +22,7 @@ const DEFAULT_SETTINGS: Settings = {
   pickChampions: [],
 };
 
-// Custom React hook to manage settings persistence
+// Custom Hook to manage settings persistence
 export function useSettings() {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
   const [loading, setLoading] = useState(true);
