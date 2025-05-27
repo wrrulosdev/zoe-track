@@ -1,9 +1,9 @@
+use base64::engine::general_purpose::STANDARD;
+use base64::Engine as _;
 use reqwest::{
     header::{HeaderMap, HeaderValue, AUTHORIZATION},
     Client,
 };
-use base64::engine::general_purpose::STANDARD;
-use base64::Engine as _;
 use std::sync::Arc;
 
 /// Client for sending authenticated HTTP requests to the League Client API (LCU).
@@ -84,7 +84,8 @@ impl LcuRequestClient {
     ///
     /// * `Ok(String)` - The response body.
     /// * `Err(String)` - If the request or status fails.
-    pub async fn post(&self, endpoint: &str) -> Result<String, String> {  // Not used now.
+    pub async fn post(&self, endpoint: &str) -> Result<String, String> {
+        // Not used now.
         let url = format!("{}{}", self.base_url, endpoint);
         self.client
             .post(&url)
@@ -134,7 +135,10 @@ impl LcuRequestClient {
     ///
     /// * `Ok(T)` - If the response is valid JSON and deserializes into `T`.
     /// * `Err(String)` - If the request fails or deserialization fails.
-    pub async fn get_json<T: serde::de::DeserializeOwned>(&self, endpoint: &str) -> Result<T, String> {
+    pub async fn get_json<T: serde::de::DeserializeOwned>(
+        &self,
+        endpoint: &str,
+    ) -> Result<T, String> {
         let url = format!("{}{}", self.base_url, endpoint);
         self.client
             .get(&url)

@@ -1,7 +1,8 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useContext } from "react";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { LogicalSize } from "@tauri-apps/api/dpi";
 import { ChampionContext } from "../../contexts/ChampionContext";
+import { useSettings } from "../../hooks/useSettings";
 import "./SettingsPage.css";
 
 const regions = [
@@ -19,34 +20,34 @@ const regions = [
 ];
 
 function SettingsPage() {
-  const [region, setRegion] = useState("NA");
-  const [lolPath, setLolPath] = useState("C:\\Riot Games\\League of Legends");
-  const [banChampions, setBanChampions] = useState<string[]>([]);
-  const [pickChampions, setPickChampions] = useState<string[]>([]);
   const { champions } = useContext(ChampionContext);
+  const { settings, setSettings } = useSettings();
 
   useEffect(() => {
-    const resizeWindow = async () => {
-      await getCurrentWindow().setSize(new LogicalSize(500, 500));
-    };
-    resizeWindow();
+    getCurrentWindow().setSize(new LogicalSize(500, 500));
   }, []);
+
+  const updateSettings = (newValues: Partial<typeof settings>) => {
+    setSettings({ ...settings, ...newValues });
+  };
 
   const handleAddChampion = (
     champion: string,
     list: string[],
-    setList: React.Dispatch<React.SetStateAction<string[]>>
+    key: "banChampions" | "pickChampions"
   ) => {
     if (!list.includes(champion) && list.length < 3) {
-      setList([...list, champion]);
+      updateSettings({ [key]: [...list, champion] });
     }
   };
 
   const handleRemoveChampion = (
     champion: string,
-    setList: React.Dispatch<React.SetStateAction<string[]>>
+    key: "banChampions" | "pickChampions"
   ) => {
-    setList((prev) => prev.filter((c) => c !== champion));
+    updateSettings({
+      [key]: settings[key].filter((c) => c !== champion),
+    });
   };
 
   return (
@@ -57,7 +58,10 @@ function SettingsPage() {
       <section className="config">
         <div className="setting">
           <label>Region</label>
-          <select value={region} onChange={(e) => setRegion(e.target.value)}>
+          <select
+            value={settings.region}
+            onChange={(e) => updateSettings({ region: e.target.value })}
+          >
             {regions.map((r) => (
               <option key={r} value={r}>
                 {r}
@@ -70,50 +74,39 @@ function SettingsPage() {
           <label>LoL Installation Path</label>
           <input
             type="text"
-            value={lolPath}
-            onChange={(e) => setLolPath(e.target.value)}
-            placeholder="C:\\Riot Games\\League of Legends"
+            value={settings.lolPath}
+            onChange={(e) => updateSettings({ lolPath: e.target.value })}
           />
         </div>
 
         <div className="setting">
           <label>Ban Champions (max 3)</label>
           <div className="champion-list">
-            {banChampions.map((champion) => (
+            {settings.banChampions.map((champion) => (
               <span key={champion} className="champion-badge">
                 {champion}
                 <button
-                  onClick={() =>
-                    handleRemoveChampion(champion, setBanChampions)
-                  }
+                  onClick={() => handleRemoveChampion(champion, "banChampions")}
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-3 w-3"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>{" "}
+                  ✕
                 </button>
               </span>
             ))}
           </div>
-          {banChampions.length < 3 && (
+          {settings.banChampions.length < 3 && (
             <select
               onChange={(e) =>
-                handleAddChampion(e.target.value, banChampions, setBanChampions)
+                handleAddChampion(
+                  e.target.value,
+                  settings.banChampions,
+                  "banChampions"
+                )
               }
               value=""
             >
               <option value="">Select Champion</option>
               {champions
-                .filter((c) => !banChampions.includes(c))
+                .filter((c) => !settings.banChampions.includes(c))
                 .map((champion) => (
                   <option key={champion} value={champion}>
                     {champion}
@@ -126,45 +119,33 @@ function SettingsPage() {
         <div className="setting">
           <label>Pick Champions (max 3)</label>
           <div className="champion-list">
-            {pickChampions.map((champion) => (
+            {settings.pickChampions.map((champion) => (
               <span key={champion} className="champion-badge">
                 {champion}
                 <button
                   onClick={() =>
-                    handleRemoveChampion(champion, setPickChampions)
+                    handleRemoveChampion(champion, "pickChampions")
                   }
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-3 w-3"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </svg>{" "}
+                  ✕
                 </button>
               </span>
             ))}
           </div>
-          {pickChampions.length < 3 && (
+          {settings.pickChampions.length < 3 && (
             <select
               onChange={(e) =>
                 handleAddChampion(
                   e.target.value,
-                  pickChampions,
-                  setPickChampions
+                  settings.pickChampions,
+                  "pickChampions"
                 )
               }
               value=""
             >
               <option value="">Select Champion</option>
               {champions
-                .filter((c) => !pickChampions.includes(c))
+                .filter((c) => !settings.pickChampions.includes(c))
                 .map((champion) => (
                   <option key={champion} value={champion}>
                     {champion}

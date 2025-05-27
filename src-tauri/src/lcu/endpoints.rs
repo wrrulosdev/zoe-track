@@ -1,5 +1,5 @@
-use serde_json::Value;
 use super::request::LcuRequestClient;
+use serde_json::Value;
 
 /// Helper function to create a new `LcuRequestClient` instance with the given port and token.
 ///
@@ -59,7 +59,9 @@ pub async fn get_gameflow_phase(port: u16, token: &str) -> Result<String, String
 #[tauri::command]
 pub async fn auto_accept_match(port: u16, token: &str) -> Result<(), String> {
     let client = client(port, token)?;
-    client.post_empty("/lol-matchmaking/v1/ready-check/accept").await?;
+    client
+        .post_empty("/lol-matchmaking/v1/ready-check/accept")
+        .await?;
     Ok(())
 }
 

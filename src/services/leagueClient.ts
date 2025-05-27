@@ -1,6 +1,6 @@
-import { invoke } from "@tauri-apps/api/core";
-import { changeStatus, togglePorofessorButton } from "./ui";
-import { STATES } from "../constants/states";
+import {invoke} from "@tauri-apps/api/core";
+import {changeStatus, togglePorofessorButton} from "../ui/updateStatusUI.ts";
+import {STATES} from "../constants/states.ts";
 
 export interface LockFileData {
   port: number;
@@ -38,19 +38,23 @@ export async function getGameflowPhase(
 
 /**
  * Reads the League of Legends lockfile.
- * @returns {Promise<LockFileData | undefined>} Lock file data or undefined if not found.
+ * @param lolPath League of legends folder
+ * @returns {Promise<LockFileData | undefined>} Lock file data
  */
-export async function readLockFile(): Promise<LockFileData | undefined> {
+export async function readLockFile(
+    lolPath: string
+): Promise<LockFileData | undefined> {
   try {
-    const result = await invoke<LockFileData>("get_lockfile", {
-      path: "E:\\Riot Games\\League of Legends\\lockfile",
+    const lockfilePath = `${lolPath.replace(/\\+$/, "")}\\lockfile`;
+    return await invoke<LockFileData>("get_lockfile", {
+      path: lockfilePath,
     });
-    return result;
   } catch (error) {
     console.error("Error reading lockfile:", error);
     return undefined;
   }
 }
+
 
 /**
  * Sends a request to accept a match automatically.
@@ -72,8 +76,8 @@ export async function getUsernamesInLobby(lockFileData: LockFileData) {
       port: lockFileData.port,
       token: lockFileData.token,
     });
-    console.log(sessionInfo);
-    const users = sessionInfo.myTeam.map((player) => ({
+    // @ts-ignore
+    const users = sessionInfo.myTeam.map((player: { gameName: any; tagLine: any; }) => ({
       name: player.gameName,
       tag: player.tagLine ?? "UNKNOWN",
     }));
@@ -114,6 +118,7 @@ export async function monitorGame(lockFileData: LockFileData): Promise<void> {
     case "ReadyCheck":
       if (!autoAcceptSwitch?.checked) return;
       changeStatus(STATES.GAME_FOUND);
+      togglePorofessorButton(false);
       console.log("Match found, accepting...");
       await acceptGame(lockFileData);
       break;

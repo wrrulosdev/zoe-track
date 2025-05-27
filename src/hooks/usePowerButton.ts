@@ -4,8 +4,9 @@ import {
   changeStatus,
   changePowerButtonColor,
   togglePorofessorButton,
-} from "./ui";
-import { isLolRunning, monitorGame, readLockFile } from "./lcu";
+} from "../ui/updateStatusUI.ts";
+import { isLolRunning, monitorGame, readLockFile } from "../services/leagueClient.ts";
+import {useSettings} from "./useSettings.ts";
 
 /**
  * Represents the parsed contents of League of Legends' `lockfile`,
@@ -27,6 +28,7 @@ export interface LockFileData {
  * - `lockFileData`: The current lockfile data used to connect with the LoL client API, if available.
  */
 export function usePowerButton() {
+  const { settings } = useSettings();
   const [isActive, setIsActive] = useState(false);
   const [lockFileData, setLockFileData] = useState<LockFileData | null>(null);
   const monitorIntervalRef = useRef<ReturnType<typeof setInterval> | null>(
@@ -55,18 +57,17 @@ export function usePowerButton() {
     changePowerButtonColor(true);
     changeStatus(STATES.CLIENT_WAITING);
 
-    const gameRunning = await isLolRunning();
-    if (!gameRunning) return;
+    monitorIntervalRef.current = setInterval(async () => {
+      const gameRunning = await isLolRunning();
+      if (!gameRunning) return;
 
-    const data = await readLockFile();
-    if (!data) return;
+      const data = await readLockFile(settings.lolPath);
+      if (!data) return;
 
-    setLockFileData(data);
+      setLockFileData(data);
 
-    togglePorofessorButton(false);
-    monitorIntervalRef.current = setInterval(() => {
       if (data) {
-        monitorGame(data);
+        await monitorGame(data);
       }
     }, 1000);
   };

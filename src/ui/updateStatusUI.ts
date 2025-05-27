@@ -1,4 +1,4 @@
-import { AppState } from "../constants/states";
+import { AppState } from "../constants/states.ts";
 
 /**
  * Updates the app's status display based on the given state.

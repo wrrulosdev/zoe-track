@@ -2,7 +2,7 @@ import "./Home.css";
 import AppSection from "../../components/home/AppSection";
 import MainHeader from "../../components/header/MainHeader";
 import { usePowerButton } from "../../hooks/usePowerButton";
-import { getUsernamesInLobby } from "../../hooks/lcu";
+import { getUsernamesInLobby } from "../../services/leagueClient.ts";
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow, LogicalSize } from "@tauri-apps/api/window";
 import { useEffect } from "react";
@@ -19,8 +19,8 @@ function Home() {
     const users = await getUsernamesInLobby(lockFileData);
     console.log(users);
     const userTags = users
-      .map((user) => `${user.name}-${user.tag}`)
-      .map((str) => encodeURIComponent(str))
+      .map((user: { name: string; tag: string; }) => `${user.name}-${user.tag}`)
+      .map((str: string | number | boolean) => encodeURIComponent(str))
       .join(",");
     console.log(userTags);
 

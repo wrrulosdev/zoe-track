@@ -1,6 +1,6 @@
+use serde::Serialize;
 use std::fs;
 use std::path::Path;
-use serde::Serialize;
 
 /// Represents the parsed data from a League of Legends lockfile.
 ///
@@ -26,7 +26,7 @@ impl LockFileData {
     /// * `Ok(LockFileData)` if parsing was successful.
     /// * `Err(String)` if the content is malformed or missing fields.
     fn parse_lockfile(content: &str) -> Result<Self, String> {
-        if !(content.contains(":"))  {
+        if !(content.contains(":")) {
             return Err(String::from("Invalid lockfile!"));
         }
 
@@ -38,8 +38,12 @@ impl LockFileData {
         }
 
         // Attempt to parse the pid and port from string to u64
-        let pid: u64 = parts[1].parse().map_err(|_| String::from("Failed to parse pid as u64"))?;
-        let port: u64 = parts[2].parse().map_err(|_| String::from("Failed to parse port as u64"))?;
+        let pid: u64 = parts[1]
+            .parse()
+            .map_err(|_| String::from("Failed to parse pid as u64"))?;
+        let port: u64 = parts[2]
+            .parse()
+            .map_err(|_| String::from("Failed to parse port as u64"))?;
 
         let token: String = parts[3].to_string();
         let protocol: String = parts[4].to_string();
@@ -48,7 +52,7 @@ impl LockFileData {
             pid,
             port,
             token,
-            protocol
+            protocol,
         })
     }
 }

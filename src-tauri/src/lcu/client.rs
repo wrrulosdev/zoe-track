@@ -12,10 +12,8 @@ pub fn is_lol_running() -> bool {
     let mut sys = sysinfo::System::new_all();
     sys.refresh_all();
 
-    sys.processes()
-        .values()
-        .any(|process| {
-            let name = process.name();
-            name.to_string_lossy().contains("LeagueClient")
-        })
+    sys.processes().values().any(|process| {
+        let name = process.name();
+        name.to_string_lossy().contains("LeagueClient")
+    })
 }
