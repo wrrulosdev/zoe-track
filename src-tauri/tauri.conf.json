@@ -26,6 +26,11 @@
           "identifier": "window-access",
           "windows": ["main", "external"],
           "permissions": ["core:window:allow-set-size"]
+        },
+        {
+          "identifier": "files",
+          "windows": ["main", "external"],
+          "permissions": ["fs:default", "fs:allow-app-write-recursive"]
         }
       ]
     }

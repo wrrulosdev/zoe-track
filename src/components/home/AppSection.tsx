@@ -2,6 +2,7 @@ interface AppSectionProps {
   title: string;
   description: string;
   showSwitch?: boolean;
+  idSwitch?: string;
   enabled?: boolean;
   showPorofessorButton?: boolean;
   onPorofessorClick?: () => void;
@@ -14,6 +15,7 @@ interface AppSectionProps {
  * @param {string} title - Title of the section
  * @param {string} description - Description text shown below the title
  * @param {boolean} showSwitch - Whether to show a toggle switch instead of a status label or porofessor button
+ * @param {string} idSwitch - ID of the optional switch.
  * @param {boolean} showPorofessorButton - Whether to show a porofessor button instead of a status label or switch
  * @param {boolean} enabled - Whether the switch is enabled or the status shows "Active"
  */
@@ -21,6 +23,7 @@ function AppSection({
   title,
   description,
   showSwitch = false,
+  idSwitch = "",
   enabled = false,
   showPorofessorButton = false,
   onPorofessorClick,
@@ -42,7 +45,7 @@ function AppSection({
         </button>
       ) : showSwitch ? (
         <label className="switch">
-          <input type="checkbox" id="autoAcceptSwitch" defaultChecked={false} />
+          <input type="checkbox" id={idSwitch} defaultChecked={false} />
           <span className="slider"></span>
         </label>
       ) : (

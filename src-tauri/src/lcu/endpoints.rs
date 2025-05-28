@@ -1,5 +1,16 @@
+use serde::Serialize;
 use super::request::LcuRequestClient;
 use serde_json::Value;
+
+#[derive(Serialize)]
+struct ChampSelectAction {
+    actorCellId: u32,
+    championId: u32,
+    #[serde(rename = "type")]
+    action_type: String,
+    isInProgress: bool,
+    completed: bool,
+}
 
 /// Helper function to create a new `LcuRequestClient` instance with the given port and token.
 ///
@@ -78,4 +89,37 @@ pub async fn session_info(port: u16, token: &str) -> Result<Value, String> {
     let client = client(port, token)?;
     let session_json = client.get_json("/lol-champ-select/v1/session").await?;
     Ok(session_json)
+}
+
+/// Performs a champion select action (pick or ban) during the champion select phase.
+///
+/// # Arguments
+///
+/// * `port` - Port of the local client.
+/// * `token` - Authentication token.
+/// * `action_id` - ID of the action to perform.
+/// * `champion_id` - ID of the champion to select or ban.
+///
+/// # Returns
+///
+/// * `Ok(())` if the action was successful.
+/// * `Err(String)` if the request fails.
+#[tauri::command]
+pub async fn perform_champ_select_action(
+    port: u16,
+    token: &str,
+    action_id: u32,
+    champion_id: u32,
+    action_type: String,
+) -> Result<(), String> {
+    let client = client(port, token)?;
+    let endpoint = format!("/lol-champ-select/v1/session/actions/{}", action_id);
+    let action = ChampSelectAction {
+        actorCellId: action_id,
+        championId: champion_id,
+        action_type: action_type.into(),
+        isInProgress: false,
+        completed: true,
+    };
+    client.patch_json(&endpoint, &action).await
 }

@@ -42,6 +42,12 @@ export const STATES: { [key: string]: AppState } = {
     textColor: "white",
     bgColor: "darkorange",
   },
+  LOCKFILE_NOT_FOUND: {
+    description: "Lockfile not found. Please check the settings.",
+    span: "Path Error",
+    textColor: "white",
+    bgColor: "crimson",
+  },
   GAME_FOUND: {
     description: "Game has been found!",
     span: "Game Found",

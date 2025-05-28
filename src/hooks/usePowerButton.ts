@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import {useContext, useEffect, useRef, useState} from "react";
 import { STATES } from "../constants/states";
 import {
   changeStatus,
@@ -7,6 +7,7 @@ import {
 } from "../ui/updateStatusUI.ts";
 import { isLolRunning, monitorGame, readLockFile } from "../services/leagueClient.ts";
 import {useSettings} from "./useSettings.ts";
+import {ChampionContext} from "../contexts/ChampionContext.tsx";
 
 /**
  * Represents the parsed contents of League of Legends' `lockfile`,
@@ -29,6 +30,7 @@ export interface LockFileData {
  */
 export function usePowerButton() {
   const { settings } = useSettings();
+  const { champions } = useContext(ChampionContext);
   const [isActive, setIsActive] = useState(false);
   const [lockFileData, setLockFileData] = useState<LockFileData | null>(null);
   const monitorIntervalRef = useRef<ReturnType<typeof setInterval> | null>(
@@ -67,7 +69,7 @@ export function usePowerButton() {
       setLockFileData(data);
 
       if (data) {
-        await monitorGame(data);
+        await monitorGame(data, settings, champions);
       }
     }, 1000);
   };

@@ -6,6 +6,7 @@ use lcu::endpoints::auto_accept_match;
 use lcu::endpoints::get_gameflow_phase;
 use lcu::endpoints::get_summoner_info;
 use lcu::endpoints::session_info;
+use lcu::endpoints::perform_champ_select_action;
 use lcu::lockfile::get_lockfile;
 use porofessor::open::open_porofessor;
 
@@ -21,6 +22,7 @@ pub fn run() {
             auto_accept_match,
             get_gameflow_phase,
             session_info,
+            perform_champ_select_action,
             open_porofessor
         ])
         .run(tauri::generate_context!())

@@ -5,6 +5,7 @@ use reqwest::{
     Client,
 };
 use std::sync::Arc;
+use serde::Serialize;
 
 /// Client for sending authenticated HTTP requests to the League Client API (LCU).
 ///
@@ -119,6 +120,39 @@ impl LcuRequestClient {
             .error_for_status()
             .map_err(|e| e.to_string())?;
         Ok(())
+    }
+
+    /// Sends a PATCH request with a JSON body to the specified endpoint.
+    ///
+    /// # Arguments
+    ///
+    /// * `endpoint` - The endpoint path (e.g., "/lol-champ-select/v1/session/actions/{id}").
+    /// * `body` - The request body implementing `Serialize`.
+    ///
+    /// # Returns
+    ///
+    /// * `Ok(())` if the request was successful.
+    /// * `Err(String)` if the request fails or the response is unsuccessful.
+    pub async fn patch_json<T: Serialize>(&self, endpoint: &str, body: &T) -> Result<(), String> {
+        let url = format!("{}{}", self.base_url, endpoint);
+        let response = self
+            .client
+            .patch(&url)
+            .json(body)
+            .send()
+            .await
+            .map_err(|e| format!("Request failed: {}", e))?;
+
+        if response.status().is_success() {
+            Ok(())
+        } else {
+            let status = response.status();
+            let text = response
+                .text()
+                .await
+                .unwrap_or_else(|_| "<no error body>".to_string());
+            Err(format!("HTTP {} Error: {}", status, text))
+        }
     }
 
     /// Send a GET request and deserialize the response JSON into type `T`.
