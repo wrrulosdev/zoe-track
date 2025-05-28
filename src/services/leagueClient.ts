@@ -108,9 +108,23 @@ async function isTime(lockFileData: LockFileData, type: string): Promise<IsTimeR
 
   const cellId = sessionInfo.localPlayerCellId;
 
+  if (sessionInfo.timer.phase != "BAN_PICK") {
+    return {
+      status: false,
+      id: 0,
+    };
+  }
+
   for (const group of sessionInfo.actions) {
     for (const action of group) {
       if (action.actorCellId === cellId && action.type === type && !action.completed) {
+        if (type == "pick" && !action.isInProgress) {
+          return {
+            status: false,
+            id: 0,
+          };
+        }
+
         console.log(`[#] It's time to ${type} a champion`);
         return {
           status: true,
@@ -166,7 +180,12 @@ async function sendChampion(
       const message = String(error);
       console.warn(`[-] Failed to ${action_type} with ${preferredChampions[i].name}:`, message);
 
-      if (!message.toLowerCase().includes("is not free to play, is not owned by account")) {
+      if (
+          !(
+              message.toLowerCase().includes("is not free to play, is not owned by account") ||
+              message.toLowerCase().includes("INVALID_CHAMP_SELECTION")
+          )
+      ) {
         return;
       }
     }
@@ -196,7 +215,12 @@ async function sendChampion(
       const message = String(error);
       console.warn(`[-] Failed to ${action_type} with random champion ${champion.name}:`, message);
 
-      if (!message.toLowerCase().includes("is not free to play, is not owned by account")) {
+      if (
+          !(
+              message.toLowerCase().includes("is not free to play, is not owned by account") ||
+              message.toLowerCase().includes("INVALID_CHAMP_SELECTION")
+          )
+      ) {
         return;
       }
     }
