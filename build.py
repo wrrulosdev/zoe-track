@@ -5,7 +5,7 @@ import sys
 
 from pathlib import Path
 from typing import Optional
-from datetime import date
+from datetime import datetime
 
 from dotenv import load_dotenv
 
@@ -108,7 +108,7 @@ class TauriBuilder:
             version = json.load(f).get('version')
 
         notes: str = input('Write the content of the notes section: ')
-        pub_date: str = date.today().strftime('%Y-%m-%d')
+        pub_date: str = datetime.utcnow().replace(microsecond=0).isoformat() + 'Z'
         version_file: dict = {
             'version': version,
             'notes': notes,

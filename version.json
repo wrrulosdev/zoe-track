@@ -1,10 +1,10 @@
 {
   "version": "1.0.0",
   "notes": "First stable version of the application",
-  "pub_date": "2025-05-29",
+  "pub_date": "2025-05-29T19:33:21Z",
   "platforms": {
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTVlJGdjJpbUo2MmllQlZxQ1R4MXAwSkhNQktueU02STdRZXlZemJsdjJDYW5lMHhnazA4MHVsOVUrU3pXTU9wWEp4NFdWT0hORWhCd1Q1UWQxUzk2T2dmcW15Y3lGZUFNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzQ4NTQ2NjY2CWZpbGU6em9ldHJhY2tfMS4wLjBfeDY0LXNldHVwLmV4ZQpXelVpc1B4UEhIWDVzaW5uT3pQVzRYZWRlMUlOWG15ZEJoQ1JhQnNvRlZ0MENlN0hlK2JvNDJWWHpPZkVzalJKYXFaQlh3d3R4byttL0RDcVhMSkREQT09Cg==",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTVlJGdjJpbUo2MmwwejV3ZFlJUDdIMElGald5REhkdGlMbGRXb0JiNS80VFRlRDM2ZmptK2N6TGgycTBTc0xCNEhzUGViUmxDVW0rMEtMRnQxaUVkVFg3Mmw3RXhiNUFBPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzQ4NTQ3MjAxCWZpbGU6em9ldHJhY2tfMS4wLjBfeDY0LXNldHVwLmV4ZQo4ak1lQzFKbCtwZnZBSnJCRWVpOWtpMlRzR0FXWEowMDdhVGwyN1E5clpNQ2JqQVJlbGN1bjNaQm9MZUVlbnpQenhwL1Z1YTh4Y0s5WG11V2VVZUFEUT09Cg==",
       "url": "https://github.com/wrrulosdev/zoe-track/releases/latest/download/zoe-track.msi"
     }
   }
