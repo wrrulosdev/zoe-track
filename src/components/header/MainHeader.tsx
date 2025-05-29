@@ -19,8 +19,8 @@ export default function MainHeader({ togglePower }: MainHeaderProps) {
       <div className="header-left">
         <img
           className="zoe-img"
-          src="/public/ZoeTrack-Icon-Transparent.webp"
-          alt="ZoeTrack Track Logo"
+          src="/ZoeTrack-Icon-Transparent.webp"
+          alt="ZoeTrack Logo"
         />
         <span className="app-name">ZoeTrack</span>
       </div>

@@ -4,8 +4,8 @@ use reqwest::{
     header::{HeaderMap, HeaderValue, AUTHORIZATION},
     Client,
 };
-use std::sync::Arc;
 use serde::Serialize;
+use std::sync::Arc;
 
 /// Client for sending authenticated HTTP requests to the League Client API (LCU).
 ///

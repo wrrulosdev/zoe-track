@@ -8,7 +8,7 @@ A program that makes life easier for LoL players. Forget about the fear of missi
 
 - 🌟 **Auto accept**: Automatically accept the match found popup!
 - 📌 **Auto pick/ban**: Automatically pick and ban a champion!
-- 💣 **SoloQ Names**: See the hidden names of players in your SoloQ lobby.
+- 💣 **Lobby Names**: See the names of players in the champions selection
 - ⚙️ **Easy Settings**: Intuitive and simple configuration
 
 ## Setup 🛠️

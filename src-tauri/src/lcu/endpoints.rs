@@ -1,5 +1,5 @@
-use serde::Serialize;
 use super::request::LcuRequestClient;
+use serde::Serialize;
 use serde_json::Value;
 
 #[derive(Serialize)]

@@ -4,6 +4,7 @@ import { LogicalSize } from "@tauri-apps/api/dpi";
 import { ChampionContext, type Champion } from "../../contexts/ChampionContext";
 import { useSettings, type Settings } from "../../hooks/useSettings";
 import "./SettingsPage.css";
+import {useNavigate} from "react-router-dom";
 
 const regions = [
   "NA",
@@ -22,6 +23,7 @@ const regions = [
 function SettingsPage() {
   const { champions } = useContext(ChampionContext);
   const { settings, setSettings } = useSettings();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCurrentWindow().setSize(new LogicalSize(500, 500));
@@ -32,7 +34,7 @@ function SettingsPage() {
   };
 
   /**
-   * Add a champion to either ban or pick list, max 3 allowed.
+   * Add a champion to either ban or pick list, max 5 allowed.
    * Does nothing if the list is already full or champion doesn't exist.
    */
   const handleAddChampion = (
@@ -40,7 +42,7 @@ function SettingsPage() {
       list: Champion[],
       key: "banChampions" | "pickChampions"
   ) => {
-    if (list.length >= 3) return;
+    if (list.length >= 5) return;
     const champion = champions.find((c) => c.name === championName);
     if (!champion) return;
 
@@ -63,7 +65,12 @@ function SettingsPage() {
 
   return (
       <main className="settings-container">
-        <h1>Configuration</h1>
+        <div className="header-container">
+          <h1>Configuration</h1>
+          <button onClick={() => navigate("/")} className="back-button">
+            ← Back to Home
+          </button>
+        </div>
         <hr />
 
         <section className="config">
@@ -91,7 +98,7 @@ function SettingsPage() {
           </div>
 
           <div className="setting">
-            <label>Ban Champions (max 3)</label>
+            <label>Ban Champions (max 5)</label>
             <div className="champion-list">
               {settings.banChampions.map((champion) => (
                   <span key={champion.id} className="champion-badge">
@@ -106,7 +113,7 @@ function SettingsPage() {
               </span>
               ))}
             </div>
-            {settings.banChampions.length < 3 && (
+            {settings.banChampions.length < 5 && (
                 <select
                     onChange={(e) =>
                         handleAddChampion(
@@ -132,7 +139,7 @@ function SettingsPage() {
           </div>
 
           <div className="setting">
-            <label>Pick Champions (max 3)</label>
+            <label>Pick Champions (max 5)</label>
             <div className="champion-list">
               {settings.pickChampions.map((champion) => (
                   <span key={champion.id} className="champion-badge">
@@ -145,7 +152,7 @@ function SettingsPage() {
               </span>
               ))}
             </div>
-            {settings.pickChampions.length < 3 && (
+            {settings.pickChampions.length < 5 && (
                 <select
                     onChange={(e) =>
                         handleAddChampion(

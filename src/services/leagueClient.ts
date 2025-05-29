@@ -163,7 +163,7 @@ async function sendChampion(
   for (let i = 0; i < preferredChampions.length; i++) {
     const championId = parseInt(preferredChampions[i].id);
     tried.add(championId);
-    await randomDelay(1000, 2000);
+    await randomDelay(500, 1000);
 
     try {
       await invoke("perform_champ_select_action", {
@@ -179,11 +179,13 @@ async function sendChampion(
     } catch (error: any) {
       const message = String(error);
       console.warn(`[-] Failed to ${action_type} with ${preferredChampions[i].name}:`, message);
+      const lowerMessage = message.toLowerCase();
 
       if (
           !(
-              message.toLowerCase().includes("is not free to play, is not owned by account") ||
-              message.toLowerCase().includes("INVALID_CHAMP_SELECTION")
+              lowerMessage.includes("is not free to play, is not owned by account") ||
+              lowerMessage.includes("invalid_champ_selection") ||
+              lowerMessage.includes("champion_already_banned")
           )
       ) {
         return;
@@ -214,11 +216,13 @@ async function sendChampion(
     } catch (error: any) {
       const message = String(error);
       console.warn(`[-] Failed to ${action_type} with random champion ${champion.name}:`, message);
+      const lowerMessage = message.toLowerCase();
 
       if (
           !(
-              message.toLowerCase().includes("is not free to play, is not owned by account") ||
-              message.toLowerCase().includes("INVALID_CHAMP_SELECTION")
+              lowerMessage.includes("is not free to play, is not owned by account") ||
+              lowerMessage.includes("invalid_champ_selection") ||
+              lowerMessage.includes("champion_already_banned")
           )
       ) {
         return;

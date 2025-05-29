@@ -6,10 +6,33 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
 
+.header-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .settings-container h1 {
   font-size: 20px;
   color: #d5b3ff;
   margin-bottom: 8px;
+}
+
+.back-button {
+  background-color: #1e1d22;
+  color: #d5b3ff;
+  border: 1px solid #2c2c2c;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+  margin-bottom: 16px;
+}
+
+.back-button:hover {
+  border-color: #b583ff;
+  color: white;
 }
 
 hr {
