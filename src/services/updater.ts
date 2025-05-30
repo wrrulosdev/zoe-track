@@ -1,4 +1,4 @@
-import {check} from "@tauri-apps/plugin-updater";
+/*import {check} from "@tauri-apps/plugin-updater";
 import {relaunch} from "@tauri-apps/plugin-process";
 
 export async function updaterManager() {  // Soon
@@ -30,4 +30,4 @@ export async function updaterManager() {  // Soon
 
     console.log('Update installed');
     await relaunch();
-}
+}*/

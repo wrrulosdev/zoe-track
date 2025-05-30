@@ -1,8 +1,8 @@
 [package]
 name = "zoe-track"
-version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+version = "1.0.0"
+description = "A program that makes life easier for LoL players. Forget about the fear of missing a match because you weren’t at your PC at the time."
+authors = ["wRRulos"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -23,8 +23,7 @@ tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 sysinfo = "0.35.1"
-tokio = { version = "0.2", features = ["full"] }
-reqwest = { version = "0.11", default-features = false, features = ["json", "rustls-tls"] }
+reqwest = { version = "0.12.18", default-features = false, features = ["json", "rustls-tls"] }
 base64 = "0.22.1"
 open = "5.3.2"
 tauri-plugin-fs = "2"

@@ -43,15 +43,11 @@
   "plugins": {
     "fs": {
       "requireLiteralLeadingDot": false
-    },
-    "updater": {
-      "endpoints": ["https://raw.githubusercontent.com/wrrulosdev/zoe-track/refs/heads/main/version.json"],
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IERBN0E2MjhBRjY1QjQ0OTUKUldTVlJGdjJpbUo2MnJvN2ZlZUYrSjI0ejQvZ0dKNm1IZkVKOHBhU2d0VWxrQnpycnp5dFQ1RXcK"
     }
   },
   "bundle": {
     "active": true,
-    "createUpdaterArtifacts": true,
+    "createUpdaterArtifacts": false,
     "targets": "all",
     "icon": [
       "icons/32x32.png",
