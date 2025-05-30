@@ -1,7 +1,7 @@
 import {check} from "@tauri-apps/plugin-updater";
 import {relaunch} from "@tauri-apps/plugin-process";
 
-export async function updaterManager() {
+export async function updaterManager() {  // Soon
     const update = await check();
     if (!update) return;
 

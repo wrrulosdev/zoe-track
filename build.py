@@ -20,7 +20,7 @@ GITHUB_LATEST_URL: str = 'https://github.com/wrrulosdev/zoe-track/releases/lates
 class Platforms:
     WINDOWS: dict = {
         'enabled': True,
-        'sig_folder': 'nsis',
+        'sig_folder': 'msi',
         'targetName': 'windows-x86_64',
         'url': f'{GITHUB_LATEST_URL}/zoe-track.msi'
     }
