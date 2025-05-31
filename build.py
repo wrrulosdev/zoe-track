@@ -102,6 +102,7 @@ class TauriBuilder:
             sys.exit(1)
 
     def _generate_version_file(self) -> None:
+        """ Generate the version file (version.json) for the updater. """
         version: str = ''
 
         with open('package.json', 'r', encoding='utf-8') as f:
